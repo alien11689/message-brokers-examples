@@ -1,3 +1,4 @@
+# docker-compose up amqWithScheduler rmqwithscheduler
 amqWithScheduler:
   image: viliusl/ubuntu-activemq-server
   volumes:
@@ -16,6 +17,8 @@ rmqwithscheduler:
     - "5672:5672"
     - "4369:4369"
     - "25672:25672"
+
+# docker-compose up amqWithComposite
 amqWithComposite:
   image: viliusl/ubuntu-activemq-server
   volumes:
@@ -24,6 +27,8 @@ amqWithComposite:
   ports:
     - "61616:61616"
     - "8161:8161"
+
+# docker-compose up tomee
 tomee:
   image: tomee:8-jre-7.0.0-M1-plus
   volumes:
@@ -34,6 +39,8 @@ tomee:
     - "8080:8080"
   links:
     - justAmq
+
+# docker-compose up justAmq
 justAmq:
   image: viliusl/ubuntu-activemq-server
   mem_limit: 512m
@@ -41,6 +48,7 @@ justAmq:
     - "61616:61616"
     - "8161:8161"
 
+# docker-compose scale postgres=1 amqWithDb=1
 postgres:
   image: postgres
   environment:
@@ -56,6 +64,7 @@ amqWithDb:
   environment:
     - "TCP_PORTS=8161"
 
+# docker-compose up amqNetwork1 amqNetwork2
 amqNetwork1:
   image: viliusl/ubuntu-activemq-server
   volumes:
@@ -68,6 +77,9 @@ amqNetwork1:
   environment:
     - DNSDOCK_NAME=amq1
     - DNSDOCK_IMAGE=amq1
+  ports:
+    - "61616:61616"
+    - "8161:8161"
 amqNetwork2:
   image: viliusl/ubuntu-activemq-server
   dns: 172.17.0.1
@@ -80,9 +92,22 @@ amqNetwork2:
   environment:
     - DNSDOCK_NAME=amq2
     - DNSDOCK_IMAGE=amq2
+  ports:
+    - "61617:61616"
+    - "8162:8161"
 dnsdock:
   image: tonistiigi/dnsdock
   volumes:
     - /var/run/docker.sock:/run/docker.sock
   ports:
     - 172.17.0.1:53:53/udp
+
+# docker-compose up amqWithSchedulerAndRedelivery
+amqWithSchedulerAndRedelivery:
+  image: viliusl/ubuntu-activemq-server
+  volumes:
+    - ./dockerFiles/activemqWithSchedulerAndRedelivery.xml:/opt/apache-activemq-5.9.0/conf/activemq.xml:ro
+  mem_limit: 512m
+  ports:
+    - "61616:61616"
+    - "8161:8161"
