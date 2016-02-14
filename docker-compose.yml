@@ -55,3 +55,25 @@ amqWithDb:
     - ./dockerFiles/postgresql-9.4-1202.jdbc4.jar:/opt/apache-activemq-5.9.0/lib/postgresql-9.4-1202.jdbc4.jar:ro
   environment:
     - "TCP_PORTS=8161"
+
+amqNetwork1:
+  image: viliusl/ubuntu-activemq-server
+  volumes:
+    - ./dockerFiles/activemqWithNetwork1.xml:/opt/apache-activemq-5.9.0/conf/activemq.xml:ro
+  mem_limit: 512m
+  links:
+    - "ambassador:amqNetwork2"
+  hostname: amq1
+amqNetwork2:
+  image: viliusl/ubuntu-activemq-server
+  volumes:
+    - ./dockerFiles/activemqWithNetwork2.xml:/opt/apache-activemq-5.9.0/conf/activemq.xml:ro
+  mem_limit: 512m
+  links:
+    - "ambassador:amqNetwork1"
+  hostname: amq2
+ambassador:
+  image: cpuguy83/docker-grand-ambassador
+  volumes:
+    - "/var/run/docker.sock:/var/run/docker.sock"
+  command: "-name messagebrokersexamples_amqNetwork2_1 -name messagebrokersexamples_amqNetwork1_1"
