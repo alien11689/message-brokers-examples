@@ -23,17 +23,21 @@
     -->
     <broker xmlns="http://activemq.apache.org/schema/core"
             brokerName="AMQ1"
-            dataDirectory="${activemq.data}">
+            dataDirectory="${activemq.data}"
+            advisorySupport="true">
 
         <networkConnectors>
             <networkConnector
                 name="toAMQ2"
                 userName="admin"
                 password="admin"
-                uri="static:(tcp://amqNetwork2:60002)">
-                    <!-- <dynamicallyIncludedDestinations>
-                        <queue physicalName="outgoing.for.AMQ2.>" />
-                    </dynamicallyIncludedDestinations> -->
+                uri="static:(tcp://amq2.docker:61616)">
+                <staticallyIncludedDestinations>
+                    <queue physicalName="TEST.FOO"/>
+                </staticallyIncludedDestinations>
+                <dynamicallyIncludedDestinations>
+                    <queue physicalName="TEST.BAR"/>
+                </dynamicallyIncludedDestinations>
             </networkConnector>
         </networkConnectors>
 
@@ -43,7 +47,7 @@
 
         <transportConnectors>
             <transportConnector name="openwire"
-                                uri="tcp://amq1:60001?maximumConnections=1000&amp;wireFormat.maxFrameSize=104857600"/>
+                                uri="tcp://amq1.docker:61616?maximumConnections=1000&amp;wireFormat.maxFrameSize=104857600"/>
         </transportConnectors>
 
         <managementContext>

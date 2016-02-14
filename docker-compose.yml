@@ -62,18 +62,27 @@ amqNetwork1:
     - ./dockerFiles/activemqWithNetwork1.xml:/opt/apache-activemq-5.9.0/conf/activemq.xml:ro
   mem_limit: 512m
   links:
-    - "ambassador:amqNetwork2"
+    - dnsdock
   hostname: amq1
+  dns: 172.17.0.1
+  environment:
+    - DNSDOCK_NAME=amq1
+    - DNSDOCK_IMAGE=amq1
 amqNetwork2:
   image: viliusl/ubuntu-activemq-server
+  dns: 172.17.0.1
   volumes:
     - ./dockerFiles/activemqWithNetwork2.xml:/opt/apache-activemq-5.9.0/conf/activemq.xml:ro
   mem_limit: 512m
   links:
-    - "ambassador:amqNetwork1"
+    - dnsdock
   hostname: amq2
-ambassador:
-  image: cpuguy83/docker-grand-ambassador
+  environment:
+    - DNSDOCK_NAME=amq2
+    - DNSDOCK_IMAGE=amq2
+dnsdock:
+  image: tonistiigi/dnsdock
   volumes:
-    - "/var/run/docker.sock:/var/run/docker.sock"
-  command: "-name messagebrokersexamples_amqNetwork2_1 -name messagebrokersexamples_amqNetwork1_1"
+    - /var/run/docker.sock:/run/docker.sock
+  ports:
+    - 172.17.0.1:53:53/udp
