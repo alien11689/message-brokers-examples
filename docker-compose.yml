@@ -1,0 +1,57 @@
+amqWithScheduler:
+  image: viliusl/ubuntu-activemq-server
+  volumes:
+    - ./dockerFiles/activemqWithScheduler.xml:/opt/apache-activemq-5.9.0/conf/activemq.xml:ro
+  mem_limit: 512m
+  ports:
+    - "61616:61616"
+    - "8161:8161"
+rmqwithscheduler:
+  build: rabbitmqwithscheduler/.
+  environment:
+    - RABBITMQ_DEFAULT_USER=admin
+    - RABBITMQ_DEFAULT_PASS=admin
+  ports:
+    - "15672:15672"
+    - "5672:5672"
+    - "4369:4369"
+    - "25672:25672"
+amqWithComposite:
+  image: viliusl/ubuntu-activemq-server
+  volumes:
+    - ./dockerFiles/activemqWithComposite.xml:/opt/apache-activemq-5.9.0/conf/activemq.xml:ro
+  mem_limit: 512m
+  ports:
+    - "61616:61616"
+    - "8161:8161"
+tomee:
+  image: tomee:8-jre-7.0.0-M1-plus
+  volumes:
+      - ./dockerFiles/tomee-users.xml:/usr/local/tomee/conf/tomcat-users.xml:ro
+      - ./dockerFiles/tomee.xml:/usr/local/tomee/conf/tomcat.xml:ro
+  mem_limit: 512m
+  ports:
+    - "8080:8080"
+  links:
+    - justAmq
+justAmq:
+  image: viliusl/ubuntu-activemq-server
+  mem_limit: 512m
+  ports:
+    - "61616:61616"
+    - "8161:8161"
+
+postgres:
+  image: postgres
+  environment:
+    - POSTGRES_PASSWORD=1234
+amqWithDb:
+  image: viliusl/ubuntu-activemq-server
+  dns: 8.8.8.8
+  links:
+    - postgres
+  volumes:
+    - ./dockerFiles/activemqWithDb.xml:/opt/apache-activemq-5.9.0/conf/activemq.xml:ro
+    - ./dockerFiles/postgresql-9.4-1202.jdbc4.jar:/opt/apache-activemq-5.9.0/lib/postgresql-9.4-1202.jdbc4.jar:ro
+  environment:
+    - "TCP_PORTS=8161"

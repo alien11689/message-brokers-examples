@@ -1,0 +1,18 @@
+<tomee>
+    <tomee>
+        <Resource id="jmsResourceAdapter" type="ActiveMQResourceAdapter">
+            BrokerXmlConfig = tcp://justAmq:61616
+        </Resource>
+
+        <Resource id="jmsConnectionFactory" type="javax.jms.ConnectionFactory">
+            ResourceAdapter = jmsResourceAdapter
+        </Resource>
+
+        <Resource id="inputQueue" type="javax.jms.Queue">
+            destination = "tomee.in"
+        </Resource>
+        <Resource id="outputQueue" type="javax.jms.Topic">
+            destination = "tomee.out"
+        </Resource>
+    </tomee>
+</tomee>
