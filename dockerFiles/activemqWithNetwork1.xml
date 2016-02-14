@@ -31,7 +31,8 @@
                 name="toAMQ2"
                 userName="admin"
                 password="admin"
-                uri="static:(tcp://amq2.docker:61616)">
+                uri="static:(tcp://amq2.docker:61616)"
+                duplex="true">
                 <staticallyIncludedDestinations>
                     <queue physicalName="TEST.FOO"/>
                 </staticallyIncludedDestinations>

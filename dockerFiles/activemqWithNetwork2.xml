@@ -23,18 +23,6 @@
             dataDirectory="${activemq.data}"
             advisorySupport="true">
 
-        <networkConnectors>
-            <networkConnector
-                name="toAMQ1"
-                userName="admin"
-                password="admin"
-                uri="static:(tcp://amq1.docker:61616)">
-                <staticallyIncludedDestinations>
-                    <queue physicalName="TEST.FOO"/>
-                </staticallyIncludedDestinations>
-            </networkConnector>
-        </networkConnectors>
-
         <persistenceAdapter>
             <kahaDB directory="${activemq.data}/kahadb"/>
         </persistenceAdapter>
