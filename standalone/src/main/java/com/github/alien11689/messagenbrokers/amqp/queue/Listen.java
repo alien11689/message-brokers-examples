@@ -1,4 +1,4 @@
-package com.github.alien11689.messagenbrokers.amqp.simple;
+package com.github.alien11689.messagenbrokers.amqp.queue;
 
 import com.rabbitmq.client.AMQP;
 import com.rabbitmq.client.Channel;

@@ -1,4 +1,4 @@
-package com.github.alien11689.messagenbrokers.jms.simple;
+package com.github.alien11689.messagenbrokers.jms.queue;
 
 import lombok.extern.slf4j.Slf4j;
 import org.apache.activemq.ActiveMQConnectionFactory;
@@ -6,13 +6,12 @@ import org.apache.activemq.ActiveMQConnectionFactory;
 import javax.jms.Connection;
 import javax.jms.ConnectionFactory;
 import javax.jms.JMSException;
-import javax.jms.Message;
-import javax.jms.MessageConsumer;
+import javax.jms.MessageProducer;
 import javax.jms.Session;
 import javax.jms.TextMessage;
 
 @Slf4j
-public class Receive {
+public class Send {
     private static ConnectionFactory connectionFactory = new ActiveMQConnectionFactory(
         "admin", "admin",
         "tcp://localhost:61616"
@@ -22,25 +21,20 @@ public class Receive {
 
         Connection connection = null;
         Session session = null;
-        MessageConsumer consumer = null;
+        MessageProducer producer = null;
         try {
             connection = connectionFactory.createConnection();
-            session = connection.createSession(false, Session.AUTO_ACKNOWLEDGE);
-            consumer = session.createConsumer(session.createQueue("simple.send"));
-            connection.start();
-            Message message = consumer.receive(60000);
-            if (message instanceof TextMessage) {
-                TextMessage textMessage = (TextMessage) message;
-                System.out.println("Received message: " + textMessage.getText());
-            }else{
-                throw new RuntimeException("No message");
-            }
+            session = connection.createSession(false, Session.CLIENT_ACKNOWLEDGE);
+            producer = session.createProducer(session.createQueue("simple.send"));
+            TextMessage message = session.createTextMessage("Test1");
+            message.setIntProperty("iteration", 2);
+            producer.send(message);
         } catch (JMSException e) {
             log.error("Exception occured", e);
         } finally {
-            if (consumer != null) {
+            if (producer != null) {
                 try {
-                    consumer.close();
+                    producer.close();
                 } catch (JMSException e) {
                     log.error("Cannot close producer", e);
                 }
