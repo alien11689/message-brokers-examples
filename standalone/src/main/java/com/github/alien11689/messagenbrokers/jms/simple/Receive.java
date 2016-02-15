@@ -1,4 +1,4 @@
-package com.github.alien11689.messagenbrokers.simple.jms.requestreply;
+package com.github.alien11689.messagenbrokers.jms.simple;
 
 import lombok.extern.slf4j.Slf4j;
 import org.apache.activemq.ActiveMQConnectionFactory;
@@ -6,15 +6,13 @@ import org.apache.activemq.ActiveMQConnectionFactory;
 import javax.jms.Connection;
 import javax.jms.ConnectionFactory;
 import javax.jms.JMSException;
-import javax.jms.MapMessage;
 import javax.jms.Message;
 import javax.jms.MessageConsumer;
-import javax.jms.MessageProducer;
 import javax.jms.Session;
-import javax.jms.TemporaryQueue;
+import javax.jms.TextMessage;
 
 @Slf4j
-public class RequestReply {
+public class Receive {
     private static ConnectionFactory connectionFactory = new ActiveMQConnectionFactory(
         "admin", "admin",
         "tcp://localhost:61616"
@@ -24,39 +22,27 @@ public class RequestReply {
 
         Connection connection = null;
         Session session = null;
-        MessageProducer producer = null;
         MessageConsumer consumer = null;
         try {
             connection = connectionFactory.createConnection();
-            session = connection.createSession(false, Session.CLIENT_ACKNOWLEDGE);
-            producer = session.createProducer(session.createQueue("simple.adder"));
-            MapMessage message = session.createMapMessage();
-            message.setInt("a", 5);
-            message.setInt("b", 10);
-            TemporaryQueue temporaryQueue = session.createTemporaryQueue();
-            message.setJMSReplyTo(temporaryQueue);
-            producer.send(message);
-            consumer = session.createConsumer(temporaryQueue);
+            session = connection.createSession(false, Session.AUTO_ACKNOWLEDGE);
+            consumer = session.createConsumer(session.createQueue("simple.send"));
             connection.start();
-            Message receive = consumer.receive(1000);
-            MapMessage mapMessage = (MapMessage) receive;
-            int result = mapMessage.getInt("result");
-            System.out.println("Adding result is " + result);
+            Message message = consumer.receive(60000);
+            if (message instanceof TextMessage) {
+                TextMessage textMessage = (TextMessage) message;
+                System.out.println("Received message: " + textMessage.getText());
+            }else{
+                throw new RuntimeException("No message");
+            }
         } catch (JMSException e) {
             log.error("Exception occured", e);
         } finally {
-            if (producer != null) {
-                try {
-                    producer.close();
-                } catch (JMSException e) {
-                    log.error("Cannot close producer", e);
-                }
-            }
             if (consumer != null) {
                 try {
                     consumer.close();
                 } catch (JMSException e) {
-                    log.error("Cannot close consumer", e);
+                    log.error("Cannot close producer", e);
                 }
             }
             if (session != null) {

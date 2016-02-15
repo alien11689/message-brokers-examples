@@ -1,21 +1,19 @@
-package com.github.alien11689.messagenbrokers.simple.amqp.requestreply;
+package com.github.alien11689.messagenbrokers.amqp.simple;
 
-import com.rabbitmq.client.AMQP;
 import com.rabbitmq.client.Channel;
 import com.rabbitmq.client.Connection;
 import com.rabbitmq.client.ConnectionFactory;
-import com.rabbitmq.client.QueueingConsumer;
 import lombok.extern.slf4j.Slf4j;
 
 import java.io.IOException;
 import java.util.concurrent.TimeoutException;
 
 @Slf4j
-public class Calculator {
+public class Send {
 
     private static final ConnectionFactory connectionFactory = new ConnectionFactory();
 
-    public static void main(String[] args) throws InterruptedException {
+    public static void main(String[] args) {
         connectionFactory.setHost("Localhost");
         connectionFactory.setUsername("admin");
         connectionFactory.setPassword("admin");
@@ -26,16 +24,8 @@ public class Calculator {
         try {
             connection = connectionFactory.newConnection();
             channel = connection.createChannel();
-            QueueingConsumer queueingConsumer = new QueueingConsumer(channel);
-            channel.queueDeclare("simple.adder", true, false, false, null);
-            channel.basicConsume("simple.adder", true, queueingConsumer);
-            QueueingConsumer.Delivery delivery = queueingConsumer.nextDelivery(60000);
-            String correlationId = delivery.getProperties().getCorrelationId();
-            String replyTo = delivery.getProperties().getReplyTo();
-            String[] split = new String(delivery.getBody(), "UTF-8").split(",");
-            int result = Integer.parseInt(split[0]) + Integer.parseInt(split[1]);
-            AMQP.BasicProperties properties = new AMQP.BasicProperties.Builder().correlationId(correlationId).build();
-            channel.basicPublish("", replyTo, properties, String.valueOf(result).getBytes("UTF-8"));
+            channel.queueDeclare("simple.send", true, false, false, null);
+            channel.basicPublish("", "simple.send", null, "Test rabbit".getBytes("UTF-8"));
         } catch (IOException | TimeoutException e) {
             log.error("Exception occured", e);
         } finally {

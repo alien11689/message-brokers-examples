@@ -1,24 +1,20 @@
-package com.github.alien11689.messagenbrokers.simple.amqp;
+package com.github.alien11689.messagenbrokers.amqp.simple;
 
-import com.rabbitmq.client.AMQP;
 import com.rabbitmq.client.Channel;
 import com.rabbitmq.client.Connection;
 import com.rabbitmq.client.ConnectionFactory;
-import com.rabbitmq.client.DefaultConsumer;
-import com.rabbitmq.client.Envelope;
+import com.rabbitmq.client.GetResponse;
 import lombok.extern.slf4j.Slf4j;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.concurrent.TimeoutException;
 
 @Slf4j
-public class Listen {
+public class Receive {
 
     private static final ConnectionFactory connectionFactory = new ConnectionFactory();
 
-    public static void main(String[] args) throws InterruptedException {
+    public static void main(String[] args) {
         connectionFactory.setHost("Localhost");
         connectionFactory.setUsername("admin");
         connectionFactory.setPassword("admin");
@@ -30,19 +26,8 @@ public class Listen {
             connection = connectionFactory.newConnection();
             channel = connection.createChannel();
             channel.queueDeclare("simple.send", true, false, false, null);
-            List<String> messages = new ArrayList<>();
-            channel.basicConsume("simple.send", true, new DefaultConsumer(channel) {
-                @Override
-                public void handleDelivery(String consumerTag, Envelope envelope, AMQP.BasicProperties properties, byte[] body) throws IOException {
-                    String text = new String(body, "UTF-8");
-                    System.out.println("Received message " + text);
-                    messages.add(text);
-                }
-            });
-            while (messages.size() < 1) {
-                Thread.sleep(1000);
-            }
-            System.out.println("At least one message received");
+            GetResponse getResponse = channel.basicGet("simple.send", true);
+            System.out.println("Received message " + new String(getResponse.getBody(), "UTF-8"));
         } catch (IOException | TimeoutException e) {
             log.error("Exception occured", e);
         } finally {

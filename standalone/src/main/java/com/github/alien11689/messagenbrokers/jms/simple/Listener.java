@@ -1,4 +1,4 @@
-package com.github.alien11689.messagenbrokers.simple.jms;
+package com.github.alien11689.messagenbrokers.jms.simple;
 
 import lombok.extern.slf4j.Slf4j;
 import org.apache.activemq.ActiveMQConnectionFactory;
