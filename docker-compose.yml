@@ -50,7 +50,7 @@ justAmq:
 
 # docker-compose scale postgres=1 amqWithDb=1
 postgres:
-  image: postgres
+  image: postgres:9.5
   environment:
     - POSTGRES_PASSWORD=1234
 amqWithDb:
@@ -96,7 +96,7 @@ amqNetwork2:
     - "61617:61616"
     - "8162:8161"
 dnsdock:
-  image: tonistiigi/dnsdock
+  image: tonistiigi/dnsdock:v1.10.0
   volumes:
     - /var/run/docker.sock:/run/docker.sock
   ports:
