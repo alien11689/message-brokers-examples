@@ -1,4 +1,4 @@
-package com.github.alien11689.messagenbrokers.jms.requestreply
+package com.github.alien11689.messagenbrokers.jms.soap
 
 import org.apache.activemq.ActiveMQConnectionFactory
 import org.apache.cxf.frontend.ClientProxy
