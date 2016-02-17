@@ -111,3 +111,12 @@ amqWithSchedulerAndRedelivery:
   ports:
     - "61616:61616"
     - "8161:8161"
+# docker-compose up amqWithVirtualTopic
+amqWithVirtualTopic:
+  image: viliusl/ubuntu-activemq-server
+  volumes:
+    - ./dockerFiles/activemqWithVirtualTopic.xml:/opt/apache-activemq-5.9.0/conf/activemq.xml:ro
+  mem_limit: 512m
+  ports:
+    - "61616:61616"
+    - "8161:8161"

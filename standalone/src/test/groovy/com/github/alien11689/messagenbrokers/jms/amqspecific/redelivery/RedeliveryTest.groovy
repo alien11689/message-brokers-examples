@@ -27,7 +27,7 @@ class RedeliveryTest extends Specification {
         connection = amq.createConnection()
     }
 
-    def 'should send message to amq1 and receive on amq2'() {
+    def 'should redelivery 1 time'() {
         given:
             String messageText = UUID.randomUUID().toString()
             failMessage('FOO', messageText)
