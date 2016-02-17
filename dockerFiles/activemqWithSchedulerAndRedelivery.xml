@@ -26,18 +26,6 @@
             dataDirectory="${activemq.data}"
             schedulerSupport="true">
 
-        <destinationPolicy>
-            <policyMap>
-                <policyEntries>
-                    <policyEntry topic=">">
-                        <pendingMessageLimitStrategy>
-                            <constantPendingMessageLimitStrategy limit="1000"/>
-                        </pendingMessageLimitStrategy>
-                    </policyEntry>
-                </policyEntries>
-            </policyMap>
-        </destinationPolicy>
-
         <managementContext>
             <managementContext createConnector="false"/>
         </managementContext>
@@ -84,8 +72,8 @@
                     <policyEntry queue=">">
                         <deadLetterStrategy>
                             <individualDeadLetterStrategy
-                                queuePrefix="DLQ."
-                                useQueueForQueueMessages="true" />
+                                    queuePrefix="DLQ."
+                                    useQueueForQueueMessages="true"/>
                         </deadLetterStrategy>
                     </policyEntry>
                 </policyEntries>
@@ -98,16 +86,17 @@
                     <redeliveryPolicyMap>
                         <redeliveryPolicyEntries>
                             <redeliveryPolicy
-                                queue="FOO"
-                                maximumRedeliveries="4"
-                                redeliveryDelay="2000" />
+                                    queue="FOO"
+                                    maximumRedeliveries="1"
+                                    initialRedeliveryDelay="1000"
+                                    redeliveryDelay="1000"/>
                         </redeliveryPolicyEntries>
                         <defaultEntry>
                             <redeliveryPolicy
-                                maximumRedeliveries="4"
-                                backOffMultiplier="2"
-                                initialRedeliveryDelay="5000"
-                                redeliveryDelay="10000" />
+                                    maximumRedeliveries="5"
+                                    backOffMultiplier="1"
+                                    initialRedeliveryDelay="5000"
+                                    redeliveryDelay="10000"/>
                         </defaultEntry>
                     </redeliveryPolicyMap>
                 </redeliveryPolicyMap>
