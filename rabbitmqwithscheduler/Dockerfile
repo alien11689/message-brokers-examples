@@ -1,7 +1,7 @@
 FROM rabbitmq:3.6.0
 
-RUN curl http://www.rabbitmq.com/community-plugins/v3.5.x/rabbitmq_delayed_message_exchange-0.0.1-rmq3.5.x-9bf265e4.ez > rabbitmq_delayed_message_exchange-0.0.1-rmq3.5.x-9bf265e4.ez && \
-    mv rabbitmq_delayed_message_exchange-0.0.1-rmq3.5.x-9bf265e4.ez /usr/lib/rabbitmq/lib/rabbitmq_server-3.6.0/plugins/ && \
+RUN curl http://www.rabbitmq.com/community-plugins/v3.6.x/rabbitmq_delayed_message_exchange-0.0.1.ez > rabbitmq_delayed_message_exchange-0.0.1.ez && \
+    mv rabbitmq_delayed_message_exchange-0.0.1.ez /usr/lib/rabbitmq/lib/rabbitmq_server-3.6.0/plugins/ && \
     rabbitmq-plugins enable --offline rabbitmq_delayed_message_exchange && \
     rabbitmq-plugins enable --offline rabbitmq_management
 
