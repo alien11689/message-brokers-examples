@@ -33,7 +33,7 @@ tomee:
   image: tomee:8-jre-7.0.0-M1-plus
   volumes:
       - ./dockerFiles/tomee-users.xml:/usr/local/tomee/conf/tomcat-users.xml:ro
-      - ./dockerFiles/tomee.xml:/usr/local/tomee/conf/tomcat.xml:ro
+      - ./dockerFiles/tomee.xml:/usr/local/tomee/conf/tomee.xml:ro
   mem_limit: 512m
   ports:
     - "8080:8080"
