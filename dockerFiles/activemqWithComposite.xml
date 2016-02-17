@@ -80,19 +80,19 @@
         <destinations>
             <queue physicalName="notifications.sms"/>
             <queue physicalName="notifications.email"/>
-            <topic physicalName="notifications.all"/>
+            <queue physicalName="notifications.all"/>
         </destinations>
 
         <destinationInterceptors>
             <virtualDestinationInterceptor>
                 <virtualDestinations>
-                    <compositeQueue name="notifications">
+                    <compositeTopic name="notifications">
                         <forwardTo>
                             <filteredDestination selector="notificationType = 'SMS'" queue="notifications.sms"/>
                             <filteredDestination selector="notificationType = 'EMAIL'" queue="notifications.email"/>
-                            <topic physicalName="notifications.all" />
+                            <queue physicalName="notifications.all"/>
                         </forwardTo>
-                    </compositeQueue>
+                    </compositeTopic>
                 </virtualDestinations>
             </virtualDestinationInterceptor>
         </destinationInterceptors>
