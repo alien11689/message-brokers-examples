@@ -13,4 +13,11 @@
     <Resource id="outputQueue" type="javax.jms.Queue">
         destination = tomee.out
     </Resource>
+
+    <Container id="messageDrivenContainer" type="MESSAGE">
+        activationSpecClass = org.apache.activemq.ra.ActiveMQActivationSpec
+        instanceLimit = 10
+        messageListenerInterface = javax.jms.MessageListener
+        resourceAdapter = jmsResourceAdapter
+    </Container>
 </tomee>
