@@ -22,7 +22,7 @@
         </dependency>
     </dependencies>
     <build>
-        <defaultGoal>clean install</defaultGoal>
+        <defaultGoal>clean install tomcat7:deploy</defaultGoal>
         <plugins>
             <plugin>
                 <artifactId>maven-compiler-plugin</artifactId>
