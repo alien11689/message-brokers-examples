@@ -16,8 +16,6 @@ import javax.jms.Queue
 import javax.jms.Session
 import javax.jms.TextMessage
 
-import static com.github.alien11689.messagenbrokers.jms.AmqConnectionFactoryProvider.AMQ_CONNECTION_FACTORY
-
 class JmsScheduledMessagesTest extends Specification {
 
     String consumerText
@@ -72,7 +70,7 @@ class JmsScheduledMessagesTest extends Specification {
     }
 
     @AutoCleanup(quiet = true)
-    Connection connection = AMQ_CONNECTION_FACTORY.createConnection()
+    Connection connection = activeMQConnectionFactory.createConnection()
 
     @AutoCleanup(quiet = true)
     Session session = connection.createSession(false, Session.CLIENT_ACKNOWLEDGE)

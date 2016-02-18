@@ -1,22 +1,21 @@
 package com.github.alien11689.messagenbrokers.jms.amqspecific.redelivery
 
+import com.github.alien11689.messagenbrokers.jms.JmsSpockSpecification
 import org.apache.activemq.ActiveMQConnectionFactory
 import org.apache.activemq.RedeliveryPolicy
-import spock.lang.Specification
 import spock.util.concurrent.PollingConditions
 
 import javax.jms.Connection
 import javax.jms.Message
 import javax.jms.MessageConsumer
 import javax.jms.MessageListener
-import javax.jms.MessageProducer
 import javax.jms.Session
 import javax.jms.TextMessage
 import java.util.concurrent.atomic.AtomicInteger
 
 import static com.github.alien11689.messagenbrokers.jms.AmqConnectionFactoryProvider.AMQ_CONNECTION_FACTORY
 
-class RedeliveryTest extends Specification {
+class RedeliveryTest extends JmsSpockSpecification {
     AtomicInteger messageAmount = new AtomicInteger(0)
     Connection connection
 
@@ -32,7 +31,7 @@ class RedeliveryTest extends Specification {
             String messageText = UUID.randomUUID().toString()
             failMessage('FOO', messageText)
         when:
-            sendMessage('FOO', messageText)
+            sendMessageQueue('FOO', messageText)
         then:
             new PollingConditions(timeout: 20, delay: 1).eventually {
                 messageAmount.get() == 2
@@ -58,21 +57,5 @@ class RedeliveryTest extends Specification {
             }
         }
         connection.start()
-    }
-
-    private static void sendMessage(String queue, String messageText) {
-        Connection connection = AMQ_CONNECTION_FACTORY.createConnection()
-        Session session = connection.createSession(false, Session.AUTO_ACKNOWLEDGE)
-        MessageProducer messageProducer = session.createProducer(session.createQueue(queue))
-        messageProducer.send(session.createTextMessage(messageText))
-    }
-
-    private static String readMessage(String queue) {
-        Connection connection = AMQ_CONNECTION_FACTORY.createConnection()
-        Session session = connection.createSession(false, Session.AUTO_ACKNOWLEDGE)
-        MessageConsumer consumer = session.createConsumer(session.createQueue(queue))
-        connection.start()
-        TextMessage message = consumer.receive(10000) as TextMessage
-        return message.text
     }
 }
