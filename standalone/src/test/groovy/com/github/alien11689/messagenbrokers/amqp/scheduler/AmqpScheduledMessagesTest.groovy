@@ -3,7 +3,6 @@ package com.github.alien11689.messagenbrokers.amqp.scheduler
 import com.rabbitmq.client.AMQP
 import com.rabbitmq.client.Channel
 import com.rabbitmq.client.Connection
-import com.rabbitmq.client.ConnectionFactory
 import com.rabbitmq.client.Consumer
 import com.rabbitmq.client.DefaultConsumer
 import com.rabbitmq.client.Envelope
@@ -11,6 +10,8 @@ import spock.lang.AutoCleanup
 import spock.lang.Specification
 import spock.lang.Unroll
 import spock.util.concurrent.PollingConditions
+
+import static com.github.alien11689.messagenbrokers.amqp.RmqConnectionFactory.RMQ_CONNECTION_FACTORY
 
 class AmqpScheduledMessagesTest extends Specification {
     String exchange = 'my-exchange'
@@ -59,13 +60,7 @@ class AmqpScheduledMessagesTest extends Specification {
     }
 
     @AutoCleanup(quiet = true)
-    ConnectionFactory connectionFactory = new ConnectionFactory(
-        host: 'localhost',
-        username: 'admin',
-        password: 'admin')
-
-    @AutoCleanup(quiet = true)
-    Connection connection = connectionFactory.newConnection()
+    Connection connection = RMQ_CONNECTION_FACTORY.newConnection()
 
     @AutoCleanup(quiet = true)
     Channel channel = connection.createChannel();

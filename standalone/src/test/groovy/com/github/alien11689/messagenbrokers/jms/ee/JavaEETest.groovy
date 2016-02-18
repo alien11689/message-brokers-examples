@@ -1,18 +1,17 @@
 package com.github.alien11689.messagenbrokers.jms.ee
 
-import org.apache.activemq.ActiveMQConnectionFactory
 import spock.lang.Specification
 
 import javax.jms.Connection
-import javax.jms.ConnectionFactory
 import javax.jms.MessageConsumer
 import javax.jms.MessageProducer
 import javax.jms.Session
 import javax.jms.TextMessage
 
+import static com.github.alien11689.messagenbrokers.jms.AmqConnectionFactoryProvider.AMQ_CONNECTION_FACTORY
+
 class JavaEETest extends Specification {
-    ConnectionFactory amq = new ActiveMQConnectionFactory('admin', 'admin', 'tcp://localhost:61616')
-    Connection connection = amq.createConnection()
+    Connection connection = AMQ_CONNECTION_FACTORY.createConnection()
 
     def 'should get message from virtual topic'() {
         given:
@@ -25,15 +24,15 @@ class JavaEETest extends Specification {
             connection.close()
     }
 
-    private void sendMessage(String queue, String messageText) {
-        Connection connection = amq.createConnection()
+    private static void sendMessage(String queue, String messageText) {
+        Connection connection = AMQ_CONNECTION_FACTORY.createConnection()
         Session session = connection.createSession(false, Session.AUTO_ACKNOWLEDGE)
         MessageProducer messageProducer = session.createProducer(session.createQueue(queue))
         messageProducer.send(session.createTextMessage(messageText))
     }
 
-    private String readMessage(String queue) {
-        Connection connection = amq.createConnection()
+    private static String readMessage(String queue) {
+        Connection connection = AMQ_CONNECTION_FACTORY.createConnection()
         Session session = connection.createSession(false, Session.AUTO_ACKNOWLEDGE)
         MessageConsumer consumer = session.createConsumer(session.createQueue(queue))
         connection.start()

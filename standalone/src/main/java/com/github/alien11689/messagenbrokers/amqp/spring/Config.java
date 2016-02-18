@@ -13,6 +13,8 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 
+import static com.github.alien11689.messagenbrokers.amqp.RmqConnectionFactory.RMQ_CONNECTION_FACTORY;
+
 @EnableRabbit
 @Configuration
 @ComponentScan(basePackageClasses = Config.class)
@@ -31,22 +33,22 @@ public class Config {
     }
 
     @Bean
-    public Queue queueIn(){
+    public Queue queueIn() {
         return new Queue("spring.in");
     }
 
     @Bean
-    public Queue queueOut(){
+    public Queue queueOut() {
         return new Queue("spring.out");
     }
 
     @Bean
-    public Queue queueRrIn(){
+    public Queue queueRrIn() {
         return new Queue("spring.rr.in");
     }
 
     @Bean
-    public Queue queueRrOut(){
+    public Queue queueRrOut() {
         return new Queue("spring.rr.out");
     }
 
@@ -57,11 +59,7 @@ public class Config {
 
     @Bean
     public ConnectionFactory connectionFactory() {
-        com.rabbitmq.client.ConnectionFactory connectionFactory = new com.rabbitmq.client.ConnectionFactory();
-        connectionFactory.setHost("localhost");
-        connectionFactory.setUsername("admin");
-        connectionFactory.setPassword("admin");
-        return new CachingConnectionFactory(connectionFactory);
+        return new CachingConnectionFactory(RMQ_CONNECTION_FACTORY);
     }
 
 }

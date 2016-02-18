@@ -1,6 +1,5 @@
 package com.github.alien11689.messagenbrokers.jms.scheduler
 
-import org.apache.activemq.ActiveMQConnectionFactory
 import org.apache.activemq.ScheduledMessage
 import spock.lang.AutoCleanup
 import spock.lang.Specification
@@ -8,7 +7,6 @@ import spock.lang.Unroll
 import spock.util.concurrent.PollingConditions
 
 import javax.jms.Connection
-import javax.jms.ConnectionFactory
 import javax.jms.Destination
 import javax.jms.Message
 import javax.jms.MessageConsumer
@@ -17,6 +15,8 @@ import javax.jms.MessageProducer
 import javax.jms.Queue
 import javax.jms.Session
 import javax.jms.TextMessage
+
+import static com.github.alien11689.messagenbrokers.jms.AmqConnectionFactoryProvider.AMQ_CONNECTION_FACTORY
 
 class JmsScheduledMessagesTest extends Specification {
 
@@ -49,7 +49,7 @@ class JmsScheduledMessagesTest extends Specification {
     private TextMessage prepareMessage(msg) {
         Message message = session.createTextMessage(msg)
         message.setLongProperty(ScheduledMessage.AMQ_SCHEDULED_DELAY, 8000)
-        message
+        return message
     }
 
     private MessageProducer prepareProducer(Queue destination) {
@@ -72,10 +72,7 @@ class JmsScheduledMessagesTest extends Specification {
     }
 
     @AutoCleanup(quiet = true)
-    ConnectionFactory activeMQConnectionFactory = new ActiveMQConnectionFactory('admin', 'admin', 'tcp://localhost:61616')
-
-    @AutoCleanup(quiet = true)
-    Connection connection = activeMQConnectionFactory.createConnection()
+    Connection connection = AMQ_CONNECTION_FACTORY.createConnection()
 
     @AutoCleanup(quiet = true)
     Session session = connection.createSession(false, Session.CLIENT_ACKNOWLEDGE)

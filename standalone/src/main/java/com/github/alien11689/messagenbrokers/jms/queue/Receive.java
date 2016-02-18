@@ -1,30 +1,25 @@
 package com.github.alien11689.messagenbrokers.jms.queue;
 
 import lombok.extern.slf4j.Slf4j;
-import org.apache.activemq.ActiveMQConnectionFactory;
 
 import javax.jms.Connection;
-import javax.jms.ConnectionFactory;
 import javax.jms.JMSException;
 import javax.jms.Message;
 import javax.jms.MessageConsumer;
 import javax.jms.Session;
 import javax.jms.TextMessage;
 
+import static com.github.alien11689.messagenbrokers.jms.AmqConnectionFactoryProvider.AMQ_CONNECTION_FACTORY;
+
 @Slf4j
 public class Receive {
-    private static ConnectionFactory connectionFactory = new ActiveMQConnectionFactory(
-        "admin", "admin",
-        "tcp://localhost:61616"
-    );
-
     public static void main(String[] args) {
 
         Connection connection = null;
         Session session = null;
         MessageConsumer consumer = null;
         try {
-            connection = connectionFactory.createConnection();
+            connection = AMQ_CONNECTION_FACTORY.createConnection();
             session = connection.createSession(false, Session.AUTO_ACKNOWLEDGE);
             consumer = session.createConsumer(session.createQueue("simple.send"));
             connection.start();
@@ -32,7 +27,7 @@ public class Receive {
             if (message instanceof TextMessage) {
                 TextMessage textMessage = (TextMessage) message;
                 System.out.println("Received message: " + textMessage.getText());
-            }else{
+            } else {
                 throw new RuntimeException("No message");
             }
         } catch (JMSException e) {

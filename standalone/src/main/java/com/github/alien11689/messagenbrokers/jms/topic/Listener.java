@@ -1,10 +1,8 @@
 package com.github.alien11689.messagenbrokers.jms.topic;
 
 import lombok.extern.slf4j.Slf4j;
-import org.apache.activemq.ActiveMQConnectionFactory;
 
 import javax.jms.Connection;
-import javax.jms.ConnectionFactory;
 import javax.jms.JMSException;
 import javax.jms.Message;
 import javax.jms.MessageConsumer;
@@ -14,12 +12,10 @@ import javax.jms.TextMessage;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.github.alien11689.messagenbrokers.jms.AmqConnectionFactoryProvider.AMQ_CONNECTION_FACTORY;
+
 @Slf4j
 public class Listener {
-    private static ConnectionFactory connectionFactory = new ActiveMQConnectionFactory(
-        "admin", "admin",
-        "tcp://localhost:61616"
-    );
 
     public static void main(String[] args) throws InterruptedException {
 
@@ -27,7 +23,7 @@ public class Listener {
         Session session = null;
         MessageConsumer consumer = null;
         try {
-            connection = connectionFactory.createConnection();
+            connection = AMQ_CONNECTION_FACTORY.createConnection();
             session = connection.createSession(false, Session.AUTO_ACKNOWLEDGE);
             List<String> messages = new ArrayList<>();
             connection.start();

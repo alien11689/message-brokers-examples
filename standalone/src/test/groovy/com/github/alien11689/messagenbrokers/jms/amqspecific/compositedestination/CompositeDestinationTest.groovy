@@ -1,20 +1,19 @@
 package com.github.alien11689.messagenbrokers.jms.amqspecific.compositedestination
 
-import org.apache.activemq.ActiveMQConnectionFactory
 import spock.lang.Specification
 
 import javax.jms.Connection
-import javax.jms.ConnectionFactory
 import javax.jms.MessageConsumer
 import javax.jms.MessageProducer
 import javax.jms.Session
 import javax.jms.TextMessage
 import java.util.concurrent.atomic.AtomicInteger
 
+import static com.github.alien11689.messagenbrokers.jms.AmqConnectionFactoryProvider.AMQ_CONNECTION_FACTORY
+
 class CompositeDestinationTest extends Specification {
-    ConnectionFactory amq = new ActiveMQConnectionFactory('admin', 'admin', 'tcp://localhost:61616')
     AtomicInteger messageAmount = new AtomicInteger(0)
-    Connection connection = amq.createConnection()
+    Connection connection = AMQ_CONNECTION_FACTORY.createConnection()
 
     def 'should get message from virtual topic'() {
         given:

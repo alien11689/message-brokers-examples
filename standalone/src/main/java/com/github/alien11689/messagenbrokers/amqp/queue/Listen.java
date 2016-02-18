@@ -3,7 +3,6 @@ package com.github.alien11689.messagenbrokers.amqp.queue;
 import com.rabbitmq.client.AMQP;
 import com.rabbitmq.client.Channel;
 import com.rabbitmq.client.Connection;
-import com.rabbitmq.client.ConnectionFactory;
 import com.rabbitmq.client.DefaultConsumer;
 import com.rabbitmq.client.Envelope;
 import lombok.extern.slf4j.Slf4j;
@@ -13,21 +12,18 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeoutException;
 
+import static com.github.alien11689.messagenbrokers.amqp.RmqConnectionFactory.RMQ_CONNECTION_FACTORY;
+
 @Slf4j
 public class Listen {
 
-    private static final ConnectionFactory connectionFactory = new ConnectionFactory();
-
     public static void main(String[] args) throws InterruptedException {
-        connectionFactory.setHost("Localhost");
-        connectionFactory.setUsername("admin");
-        connectionFactory.setPassword("admin");
 
         Connection connection = null;
         Channel channel = null;
 
         try {
-            connection = connectionFactory.newConnection();
+            connection = RMQ_CONNECTION_FACTORY.newConnection();
             channel = connection.createChannel();
             channel.queueDeclare("simple.send", true, false, false, null);
             List<String> messages = new ArrayList<>();

@@ -1,6 +1,5 @@
 package com.github.alien11689.messagenbrokers.jms.spring;
 
-import org.apache.activemq.ActiveMQConnectionFactory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
@@ -9,6 +8,8 @@ import org.springframework.jms.config.DefaultJmsListenerContainerFactory;
 import org.springframework.jms.core.JmsTemplate;
 
 import javax.jms.ConnectionFactory;
+
+import static com.github.alien11689.messagenbrokers.jms.AmqConnectionFactoryProvider.AMQ_CONNECTION_FACTORY;
 
 @EnableJms
 @Configuration
@@ -30,6 +31,6 @@ public class Config {
 
     @Bean
     public ConnectionFactory connectionFactory() {
-        return new ActiveMQConnectionFactory("admin", "admin", "tcp://localhost:61616");
+        return AMQ_CONNECTION_FACTORY;
     }
 }

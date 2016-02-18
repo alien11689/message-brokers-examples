@@ -2,28 +2,23 @@ package com.github.alien11689.messagenbrokers.amqp.queue;
 
 import com.rabbitmq.client.Channel;
 import com.rabbitmq.client.Connection;
-import com.rabbitmq.client.ConnectionFactory;
 import com.rabbitmq.client.GetResponse;
 import lombok.extern.slf4j.Slf4j;
 
 import java.io.IOException;
 import java.util.concurrent.TimeoutException;
 
+import static com.github.alien11689.messagenbrokers.amqp.RmqConnectionFactory.RMQ_CONNECTION_FACTORY;
+
 @Slf4j
 public class Receive {
-
-    private static final ConnectionFactory connectionFactory = new ConnectionFactory();
-
     public static void main(String[] args) {
-        connectionFactory.setHost("Localhost");
-        connectionFactory.setUsername("admin");
-        connectionFactory.setPassword("admin");
 
         Connection connection = null;
         Channel channel = null;
 
         try {
-            connection = connectionFactory.newConnection();
+            connection = RMQ_CONNECTION_FACTORY.newConnection();
             channel = connection.createChannel();
             channel.queueDeclare("simple.send", true, false, false, null);
             GetResponse getResponse = channel.basicGet("simple.send", true);

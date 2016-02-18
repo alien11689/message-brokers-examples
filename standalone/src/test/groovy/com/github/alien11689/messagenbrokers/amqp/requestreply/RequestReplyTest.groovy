@@ -3,22 +3,18 @@ package com.github.alien11689.messagenbrokers.amqp.requestreply
 import com.rabbitmq.client.AMQP
 import com.rabbitmq.client.Channel
 import com.rabbitmq.client.Connection
-import com.rabbitmq.client.ConnectionFactory
 import com.rabbitmq.client.QueueingConsumer
 import spock.lang.AutoCleanup
 import spock.lang.Specification
 
 import java.util.concurrent.Executors
 
+import static com.github.alien11689.messagenbrokers.amqp.RmqConnectionFactory.RMQ_CONNECTION_FACTORY
+
 class RequestReplyTest extends Specification {
-    ConnectionFactory connectionFactory = new ConnectionFactory(
-        host: 'localhost',
-        username: 'admin',
-        password: 'admin'
-    )
 
     @AutoCleanup(quiet = true)
-    Connection connection = connectionFactory.newConnection()
+    Connection connection = RMQ_CONNECTION_FACTORY.newConnection()
 
     @AutoCleanup(quiet = true)
     Channel channel = connection.createChannel()

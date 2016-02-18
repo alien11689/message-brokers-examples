@@ -1,20 +1,18 @@
 package com.github.alien11689.messagenbrokers.jms.amqspecific.network
 
-import org.apache.activemq.ActiveMQConnectionFactory
 import spock.lang.Specification
 import spock.lang.Unroll
 
 import javax.jms.Connection
-import javax.jms.ConnectionFactory
 import javax.jms.MessageConsumer
 import javax.jms.MessageProducer
 import javax.jms.Session
 import javax.jms.TextMessage
 
-class NetworkOfBrokersTest extends Specification {
-    ConnectionFactory amq1 = new ActiveMQConnectionFactory('admin', 'admin', 'tcp://localhost:61616')
-    ConnectionFactory amq2 = new ActiveMQConnectionFactory('admin', 'admin', 'tcp://localhost:61617')
+import static com.github.alien11689.messagenbrokers.jms.AmqConnectionFactoryProvider.AMQ_CONNECTION_FACTORY
+import static com.github.alien11689.messagenbrokers.jms.AmqConnectionFactoryProvider.AMQ_CONNECTION_FACTORY2
 
+class NetworkOfBrokersTest extends Specification {
     @Unroll
     def 'should send message to amq1 and receive on amq2'() {
         given:
@@ -28,15 +26,15 @@ class NetworkOfBrokersTest extends Specification {
 
     }
 
-    private void sendMessageAmq1(String queue, String messageText) {
-        Connection connection = amq1.createConnection()
+    private static void sendMessageAmq1(String queue, String messageText) {
+        Connection connection = AMQ_CONNECTION_FACTORY.createConnection()
         Session session = connection.createSession(false, Session.AUTO_ACKNOWLEDGE)
         MessageProducer messageProducer = session.createProducer(session.createQueue(queue))
         messageProducer.send(session.createTextMessage(messageText))
     }
 
-    private String readMessageAmq2(String queue){
-        Connection connection = amq2.createConnection()
+    private static String readMessageAmq2(String queue) {
+        Connection connection = AMQ_CONNECTION_FACTORY2.createConnection()
         Session session = connection.createSession(false, Session.AUTO_ACKNOWLEDGE)
         MessageConsumer consumer = session.createConsumer(session.createQueue(queue))
         connection.start()

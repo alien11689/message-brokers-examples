@@ -1,11 +1,9 @@
 package com.github.alien11689.messagenbrokers.jms.requestreply
 
-import org.apache.activemq.ActiveMQConnectionFactory
 import spock.lang.AutoCleanup
 import spock.lang.Specification
 
 import javax.jms.Connection
-import javax.jms.ConnectionFactory
 import javax.jms.MapMessage
 import javax.jms.MessageConsumer
 import javax.jms.MessageProducer
@@ -13,14 +11,11 @@ import javax.jms.Session
 import javax.jms.TemporaryQueue
 import java.util.concurrent.Executors
 
-class RequestReplyTest extends Specification {
-    ConnectionFactory connectionFactory = new ActiveMQConnectionFactory(
-        "admin", "admin",
-        "tcp://localhost:61616"
-    )
+import static com.github.alien11689.messagenbrokers.jms.AmqConnectionFactoryProvider.AMQ_CONNECTION_FACTORY
 
+class RequestReplyTest extends Specification {
     @AutoCleanup(quiet = true)
-    Connection connection = connectionFactory.createConnection()
+    Connection connection = AMQ_CONNECTION_FACTORY.createConnection()
 
     @AutoCleanup(quiet = true)
     Session session = connection.createSession(false, Session.AUTO_ACKNOWLEDGE)

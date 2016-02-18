@@ -1,29 +1,24 @@
 package com.github.alien11689.messagenbrokers.jms.queue;
 
 import lombok.extern.slf4j.Slf4j;
-import org.apache.activemq.ActiveMQConnectionFactory;
 
 import javax.jms.Connection;
-import javax.jms.ConnectionFactory;
 import javax.jms.JMSException;
 import javax.jms.MessageProducer;
 import javax.jms.Session;
 import javax.jms.TextMessage;
 
+import static com.github.alien11689.messagenbrokers.jms.AmqConnectionFactoryProvider.AMQ_CONNECTION_FACTORY;
+
 @Slf4j
 public class Send {
-    private static ConnectionFactory connectionFactory = new ActiveMQConnectionFactory(
-        "admin", "admin",
-        "tcp://localhost:61616"
-    );
-
     public static void main(String[] args) {
 
         Connection connection = null;
         Session session = null;
         MessageProducer producer = null;
         try {
-            connection = connectionFactory.createConnection();
+            connection = AMQ_CONNECTION_FACTORY.createConnection();
             session = connection.createSession(false, Session.CLIENT_ACKNOWLEDGE);
             producer = session.createProducer(session.createQueue("simple.send"));
             TextMessage message = session.createTextMessage("Test1");
