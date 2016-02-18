@@ -14,13 +14,11 @@ import javax.jms.TextMessage
 import java.util.concurrent.Executors
 
 class CamelRouteTest extends Specification {
-    ConnectionFactory rmqConnectionFactory = new ConnectionFactory().with {
-        it
-        it.host = 'Localhost'
-        it.username = 'admin'
-        it.password = 'admin'
-        it
-    }
+    ConnectionFactory rmqConnectionFactory = new ConnectionFactory(
+        host: 'Localhost',
+        username: 'admin',
+        password: 'admin'
+    )
 
     @AutoCleanup(quiet = true)
     Connection rmqConnection = rmqConnectionFactory.newConnection()
