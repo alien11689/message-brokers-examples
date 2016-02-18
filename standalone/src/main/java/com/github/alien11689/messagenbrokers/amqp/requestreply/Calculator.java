@@ -11,11 +11,11 @@ import java.io.IOException;
 import java.util.concurrent.TimeoutException;
 
 @Slf4j
-public class Calculator {
+public class Calculator implements Runnable {
 
     private static final ConnectionFactory connectionFactory = new ConnectionFactory();
 
-    public static void main(String[] args) throws InterruptedException {
+    public void run() {
         connectionFactory.setHost("Localhost");
         connectionFactory.setUsername("admin");
         connectionFactory.setPassword("admin");
@@ -36,7 +36,7 @@ public class Calculator {
             int result = Integer.parseInt(split[0]) + Integer.parseInt(split[1]);
             AMQP.BasicProperties properties = new AMQP.BasicProperties.Builder().correlationId(correlationId).build();
             channel.basicPublish("", replyTo, properties, String.valueOf(result).getBytes("UTF-8"));
-        } catch (IOException | TimeoutException e) {
+        } catch (IOException | TimeoutException | InterruptedException e) {
             log.error("Exception occured", e);
         } finally {
             if (channel != null) {
