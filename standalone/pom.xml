@@ -96,6 +96,7 @@
     </dependencies>
 
     <build>
+        <defaultGoal>clean compile test-compile</defaultGoal>
         <plugins>
             <plugin>
                 <groupId>org.codehaus.gmavenplus</groupId>
