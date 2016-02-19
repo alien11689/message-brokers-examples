@@ -22,7 +22,6 @@
         </managementContext>
 
         <persistenceAdapter>
-            <!--<kahaDB directory="${activemq.data}/kahadb"/>-->
             <jdbcPersistenceAdapter dataDirectory="activemq-data" dataSource="#postgres-ds"/>
         </persistenceAdapter>
 
@@ -51,6 +50,10 @@
         <shutdownHooks>
             <bean xmlns="http://www.springframework.org/schema/beans" class="org.apache.activemq.hooks.SpringContextHook"/>
         </shutdownHooks>
+
+        <destinations>
+            <queue physicalName="queue1"/>
+        </destinations>
 
     </broker>
 
