@@ -48,12 +48,13 @@ justAmq:
     - "61616:61616"
     - "8161:8161"
 
-# docker-compose scale postgres=1 amqWithDb=1
+# docker-compose up amqWithDb1
+# docker-compose up amqWithDb2
 postgres:
   image: postgres:9.5
   environment:
     - POSTGRES_PASSWORD=1234
-amqWithDb:
+amqWithDb1:
   image: viliusl/ubuntu-activemq-server
   dns: 8.8.8.8
   links:
@@ -61,8 +62,20 @@ amqWithDb:
   volumes:
     - ./dockerFiles/activemqWithDb.xml:/opt/apache-activemq-5.9.0/conf/activemq.xml:ro
     - ./dockerFiles/postgresql-9.4-1202.jdbc4.jar:/opt/apache-activemq-5.9.0/lib/postgresql-9.4-1202.jdbc4.jar:ro
-  environment:
-    - "TCP_PORTS=8161"
+  ports:
+    - "8161:8161"
+    - "61616:61616"
+amqWithDb2:
+  image: viliusl/ubuntu-activemq-server
+  dns: 8.8.8.8
+  links:
+    - postgres
+  volumes:
+    - ./dockerFiles/activemqWithDb.xml:/opt/apache-activemq-5.9.0/conf/activemq.xml:ro
+    - ./dockerFiles/postgresql-9.4-1202.jdbc4.jar:/opt/apache-activemq-5.9.0/lib/postgresql-9.4-1202.jdbc4.jar:ro
+  ports:
+    - "8162:8161"
+    - "61617:61616"
 
 # docker-compose up amqNetwork1 amqNetwork2
 amqNetwork1:
