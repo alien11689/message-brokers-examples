@@ -1,4 +1,4 @@
-package com.github.alien11689.messagenbrokers.jms.soj.api;
+package com.github.alien11689.messagenbrokers.jms.requestreply.soj.api;
 
 import lombok.Data;
 

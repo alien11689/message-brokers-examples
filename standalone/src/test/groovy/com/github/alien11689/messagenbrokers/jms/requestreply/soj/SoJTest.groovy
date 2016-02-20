@@ -1,9 +1,9 @@
-package com.github.alien11689.messagenbrokers.jms.soj
+package com.github.alien11689.messagenbrokers.jms.requestreply.soj
 
 import com.github.alien11689.messagenbrokers.helper.Docker
-import com.github.alien11689.messagenbrokers.jms.soj.api.Adder
-import com.github.alien11689.messagenbrokers.jms.soj.api.ToAdd
-import com.github.alien11689.messagenbrokers.jms.soj.server.Server
+import com.github.alien11689.messagenbrokers.jms.requestreply.soj.api.Adder
+import com.github.alien11689.messagenbrokers.jms.requestreply.soj.api.ToAdd
+import com.github.alien11689.messagenbrokers.jms.requestreply.soj.server.Server
 import org.apache.cxf.frontend.ClientProxy
 import org.apache.cxf.jaxws.JaxWsProxyFactoryBean
 import org.apache.cxf.transport.jms.ConnectionFactoryFeature

@@ -32,6 +32,7 @@ public class Calculator implements Runnable {
                     producer = finalSession.createProducer(message.getJMSReplyTo());
                     MapMessage reply = finalSession.createMapMessage();
                     reply.setInt("result", a + b);
+                    reply.setJMSCorrelationID(message.getJMSCorrelationID());
                     producer.send(reply);
                 } catch (JMSException e) {
                     log.error("Calculator error", e);

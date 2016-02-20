@@ -1,6 +1,6 @@
-package com.github.alien11689.messagenbrokers.jms.soj.server;
+package com.github.alien11689.messagenbrokers.jms.requestreply.soj.server;
 
-import com.github.alien11689.messagenbrokers.jms.soj.impl.AdderImpl;
+import com.github.alien11689.messagenbrokers.jms.requestreply.soj.impl.AdderImpl;
 import org.apache.cxf.jaxws.EndpointImpl;
 import org.apache.cxf.transport.jms.ConnectionFactoryFeature;
 
