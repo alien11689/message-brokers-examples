@@ -35,7 +35,7 @@ class TopicTest extends Specification {
             })
             String messageText = UUID.randomUUID().toString()
         when:
-            channel.basicPublish("exchange_for_topic", "simple.tpc.send", null, messageText.getBytes("UTF-8"));
+            channel.basicPublish("exchange_for_topic", "simple.tpc.send", null, messageText.getBytes("UTF-8"))
         then:
             new PollingConditions(timeout: 10000).eventually {
                 messageText in messages

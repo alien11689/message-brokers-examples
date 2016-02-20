@@ -45,30 +45,30 @@ class AmqpScheduledMessagesTest extends Specification {
     }
 
     private void createQueue(String queue) {
-        channel.exchangeDeclare(exchange, 'x-delayed-message', true, false, ['x-delayed-type': 'direct']);
-        channel.queueDeclare(queue, true, false, false, null);
-        channel.queueBind(queue, exchange, queue);
+        channel.exchangeDeclare(exchange, 'x-delayed-message', true, false, ['x-delayed-type': 'direct'])
+        channel.queueDeclare(queue, true, false, false, null)
+        channel.queueBind(queue, exchange, queue)
     }
 
     private void createConsumer(String queue) {
-        consumerChannel.queueDeclare(queue, true, false, false, null);
+        consumerChannel.queueDeclare(queue, true, false, false, null)
         Consumer consumer = new DefaultConsumer(consumerChannel) {
             @Override
             public void handleDelivery(String consumerTag, Envelope envelope, AMQP.BasicProperties properties, byte[] body) {
                 println("Message received at ${new Date()}")
                 consumerText = new String(body, "UTF-8")
             }
-        };
-        consumerChannel.basicConsume(queue, true, consumer);
+        }
+        consumerChannel.basicConsume(queue, true, consumer)
     }
 
     @AutoCleanup(quiet = true)
     Connection connection = RMQ_CONNECTION_FACTORY.newConnection()
 
     @AutoCleanup(quiet = true)
-    Channel channel = connection.createChannel();
+    Channel channel = connection.createChannel()
 
     @AutoCleanup(quiet = true)
-    Channel consumerChannel = connection.createChannel();
+    Channel consumerChannel = connection.createChannel()
 
 }
