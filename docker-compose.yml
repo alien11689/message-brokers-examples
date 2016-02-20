@@ -115,8 +115,8 @@ dnsdock:
   ports:
     - 172.17.0.1:53:53/udp
 
-# docker-compose up amqWithSchedulerAndRedelivery
-amqWithSchedulerAndRedelivery:
+# docker-compose up amqWithRedeliveryAndScheduler
+amqWithRedeliveryAndScheduler:
   image: viliusl/ubuntu-activemq-server
   volumes:
     - ./dockerFiles/activemqWithSchedulerAndRedelivery.xml:/opt/apache-activemq-5.9.0/conf/activemq.xml:ro

@@ -1,12 +1,15 @@
 package com.github.alien11689.messagenbrokers.jms.amqspecific.compositedestination
 
+import com.github.alien11689.messagenbrokers.helper.Docker
 import com.github.alien11689.messagenbrokers.jms.JmsSpockSpecification
+import spock.lang.Requires
 
 import javax.jms.Connection
 import javax.jms.Message
 
 import static com.github.alien11689.messagenbrokers.jms.AmqConnectionFactoryProvider.AMQ_CONNECTION_FACTORY
 
+@Requires({ Docker.isRunning('amqWithComposite') })
 class CompositeDestinationTest extends JmsSpockSpecification {
     Connection connection = AMQ_CONNECTION_FACTORY.createConnection()
 

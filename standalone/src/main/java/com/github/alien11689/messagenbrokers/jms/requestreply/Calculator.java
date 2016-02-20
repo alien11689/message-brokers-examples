@@ -44,8 +44,14 @@ public class Calculator implements Runnable {
                         }
                     }
                 }
-
             });
+            while(true){
+                try {
+                    Thread.sleep(10000);
+                } catch (InterruptedException e) {
+                    log.error("Interupted when sleeping", e);
+                }
+            }
         } catch (JMSException e) {
             log.error("Exception occured", e);
         } finally {

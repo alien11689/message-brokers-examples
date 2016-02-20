@@ -1,5 +1,7 @@
 package com.github.alien11689.messagenbrokers.jms.amqspecific.network
 
+import com.github.alien11689.messagenbrokers.helper.Docker
+import spock.lang.Requires
 import spock.lang.Specification
 import spock.lang.Unroll
 
@@ -12,6 +14,7 @@ import javax.jms.TextMessage
 import static com.github.alien11689.messagenbrokers.jms.AmqConnectionFactoryProvider.AMQ_CONNECTION_FACTORY
 import static com.github.alien11689.messagenbrokers.jms.AmqConnectionFactoryProvider.AMQ_CONNECTION_FACTORY2
 
+@Requires({ Docker.isRunning('amqNetwork1', 'amqNetwork2') })
 class NetworkOfBrokersTest extends Specification {
     @Unroll
     def 'should send message to amq1 and receive on amq2'() {

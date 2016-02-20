@@ -1,8 +1,10 @@
 package com.github.alien11689.messagenbrokers.jms.amqspecific.redelivery
 
+import com.github.alien11689.messagenbrokers.helper.Docker
 import com.github.alien11689.messagenbrokers.jms.JmsSpockSpecification
 import org.apache.activemq.ActiveMQConnectionFactory
 import org.apache.activemq.RedeliveryPolicy
+import spock.lang.Requires
 import spock.util.concurrent.PollingConditions
 
 import javax.jms.Connection
@@ -15,6 +17,7 @@ import java.util.concurrent.atomic.AtomicInteger
 
 import static com.github.alien11689.messagenbrokers.jms.AmqConnectionFactoryProvider.AMQ_CONNECTION_FACTORY
 
+@Requires({ Docker.isRunning('amqWithRedeliveryAndScheduler') })
 class RedeliveryTest extends JmsSpockSpecification {
     AtomicInteger messageAmount = new AtomicInteger(0)
     Connection connection

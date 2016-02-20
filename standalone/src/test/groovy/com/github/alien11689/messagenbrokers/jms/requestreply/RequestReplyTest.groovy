@@ -1,6 +1,8 @@
 package com.github.alien11689.messagenbrokers.jms.requestreply
 
+import com.github.alien11689.messagenbrokers.helper.Docker
 import spock.lang.AutoCleanup
+import spock.lang.Requires
 import spock.lang.Specification
 
 import javax.jms.Connection
@@ -13,6 +15,7 @@ import java.util.concurrent.Executors
 
 import static com.github.alien11689.messagenbrokers.jms.AmqConnectionFactoryProvider.AMQ_CONNECTION_FACTORY
 
+@Requires({ Docker.isRunning('justAmq') })
 class RequestReplyTest extends Specification {
     @AutoCleanup(quiet = true)
     Connection connection = AMQ_CONNECTION_FACTORY.createConnection()

@@ -1,16 +1,19 @@
 package com.github.alien11689.messagenbrokers.amqp.requestreply
 
+import com.github.alien11689.messagenbrokers.helper.Docker
 import com.rabbitmq.client.AMQP
 import com.rabbitmq.client.Channel
 import com.rabbitmq.client.Connection
 import com.rabbitmq.client.QueueingConsumer
 import spock.lang.AutoCleanup
+import spock.lang.Requires
 import spock.lang.Specification
 
 import java.util.concurrent.Executors
 
 import static com.github.alien11689.messagenbrokers.amqp.RmqConnectionFactory.RMQ_CONNECTION_FACTORY
 
+@Requires({ Docker.isRunning('rmqwithscheduler') })
 class RequestReplyTest extends Specification {
 
     @AutoCleanup(quiet = true)

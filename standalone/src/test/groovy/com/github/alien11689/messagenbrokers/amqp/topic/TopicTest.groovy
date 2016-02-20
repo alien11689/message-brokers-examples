@@ -1,16 +1,19 @@
 package com.github.alien11689.messagenbrokers.amqp.topic
 
+import com.github.alien11689.messagenbrokers.helper.Docker
 import com.rabbitmq.client.AMQP
 import com.rabbitmq.client.Channel
 import com.rabbitmq.client.Connection
 import com.rabbitmq.client.DefaultConsumer
 import com.rabbitmq.client.Envelope
 import spock.lang.AutoCleanup
+import spock.lang.Requires
 import spock.lang.Specification
 import spock.util.concurrent.PollingConditions
 
 import static com.github.alien11689.messagenbrokers.amqp.RmqConnectionFactory.RMQ_CONNECTION_FACTORY
 
+@Requires({ Docker.isRunning('rmqwithscheduler') })
 class TopicTest extends Specification {
     @AutoCleanup(quiet = true)
     Connection connection = RMQ_CONNECTION_FACTORY.newConnection()

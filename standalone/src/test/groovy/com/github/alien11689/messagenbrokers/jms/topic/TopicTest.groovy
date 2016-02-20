@@ -1,7 +1,9 @@
 package com.github.alien11689.messagenbrokers.jms.topic
 
+import com.github.alien11689.messagenbrokers.helper.Docker
 import com.github.alien11689.messagenbrokers.jms.JmsSpockSpecification
 import spock.lang.AutoCleanup
+import spock.lang.Requires
 import spock.util.concurrent.PollingConditions
 
 import javax.jms.Connection
@@ -13,6 +15,7 @@ import javax.jms.TextMessage
 
 import static com.github.alien11689.messagenbrokers.jms.AmqConnectionFactoryProvider.AMQ_CONNECTION_FACTORY
 
+@Requires({ Docker.isRunning('justAmq') })
 class TopicTest extends JmsSpockSpecification {
     @AutoCleanup(quiet = true)
     Connection connection = AMQ_CONNECTION_FACTORY.createConnection()

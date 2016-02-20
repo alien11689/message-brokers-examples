@@ -1,13 +1,14 @@
 package com.github.alien11689.messagenbrokers.camel;
 
+import lombok.extern.slf4j.Slf4j;
 import org.apache.activemq.ActiveMQConnectionFactory;
 import org.apache.activemq.camel.component.ActiveMQComponent;
 import org.apache.camel.LoggingLevel;
 import org.apache.camel.builder.RouteBuilder;
 import org.apache.camel.impl.DefaultCamelContext;
 
+@Slf4j
 public class CamelRoute extends RouteBuilder implements Runnable {
-
 
     @Override
     public void configure() throws Exception {
@@ -26,7 +27,7 @@ public class CamelRoute extends RouteBuilder implements Runnable {
             context.addRoutes(this);
             context.start();
         } catch (Exception e) {
-            e.printStackTrace();
+            log.error("Error during route starting", e);
         }
     }
 }

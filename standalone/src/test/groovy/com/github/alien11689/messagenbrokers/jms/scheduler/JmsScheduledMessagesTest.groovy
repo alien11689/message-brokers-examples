@@ -1,7 +1,9 @@
 package com.github.alien11689.messagenbrokers.jms.scheduler
 
+import com.github.alien11689.messagenbrokers.helper.Docker
 import org.apache.activemq.ScheduledMessage
 import spock.lang.AutoCleanup
+import spock.lang.Requires
 import spock.lang.Specification
 import spock.lang.Unroll
 import spock.util.concurrent.PollingConditions
@@ -16,6 +18,9 @@ import javax.jms.Queue
 import javax.jms.Session
 import javax.jms.TextMessage
 
+import static com.github.alien11689.messagenbrokers.jms.AmqConnectionFactoryProvider.AMQ_CONNECTION_FACTORY
+
+@Requires({ Docker.isRunning('amqWithScheduler') })
 class JmsScheduledMessagesTest extends Specification {
 
     String consumerText
@@ -70,7 +75,7 @@ class JmsScheduledMessagesTest extends Specification {
     }
 
     @AutoCleanup(quiet = true)
-    Connection connection = activeMQConnectionFactory.createConnection()
+    Connection connection = AMQ_CONNECTION_FACTORY.createConnection()
 
     @AutoCleanup(quiet = true)
     Session session = connection.createSession(false, Session.CLIENT_ACKNOWLEDGE)
