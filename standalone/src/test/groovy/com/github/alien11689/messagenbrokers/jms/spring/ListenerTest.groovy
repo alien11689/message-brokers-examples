@@ -11,7 +11,6 @@ import spock.lang.Specification
 import javax.jms.JMSException
 import javax.jms.Message
 import javax.jms.Session
-import javax.jms.TextMessage
 
 @Requires({ Docker.isRunning('justAmq') })
 @ContextConfiguration(classes = Config)
@@ -31,7 +30,6 @@ class ListenerTest extends Specification {
                 }
             })
         then:
-            TextMessage receivedMessage = jmsTemplate.receive('spring.out') as TextMessage
-            receivedMessage.text == "Spring: $message"
+            jmsTemplate.receiveAndConvert('spring.out') as String == "Spring: $message" as String
     }
 }

@@ -16,7 +16,7 @@ public class Listener {
     @Autowired
     JmsTemplate jmsTemplate;
 
-    @JmsListener(destination = "spring.in", containerFactory = "jmsListenerContainerFactory")
+    @JmsListener(destination = "spring.in")
     void handleMessage(String message) {
         jmsTemplate.send("spring.out", new MessageCreator() {
             @Override
