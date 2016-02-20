@@ -14,18 +14,18 @@ import spock.util.concurrent.PollingConditions
 import static com.github.alien11689.messagenbrokers.amqp.RmqConnectionFactory.RMQ_CONNECTION_FACTORY
 
 @Requires({ Docker.isRunning('rmqwithscheduler') })
-class TopicTest extends Specification {
+class FanoutTest extends Specification {
     @AutoCleanup(quiet = true)
     Connection connection = RMQ_CONNECTION_FACTORY.newConnection()
 
     @AutoCleanup(quiet = true)
     Channel channel = connection.createChannel()
 
-    def 'should send message to topic and receive it'() {
+    def 'should send message to fanout and receive it'() {
         given:
-            channel.exchangeDeclare('exchange_for_topic', 'topic')
+            channel.exchangeDeclare('exchange_for_fanout', 'fanout')
             String queue1 = channel.queueDeclare().queue
-            channel.queueBind(queue1, 'exchange_for_topic', 'simple.tpc.send')
+            channel.queueBind(queue1, 'exchange_for_fanout', '???')
             List<String> messages1 = []
             channel.basicConsume(queue1, true, new DefaultConsumer(channel) {
                 @Override
@@ -34,7 +34,7 @@ class TopicTest extends Specification {
                 }
             })
             String queue2 = channel.queueDeclare().queue
-            channel.queueBind(queue2, 'exchange_for_topic', 'simple.tpc.*')
+            channel.queueBind(queue2, 'exchange_for_fanout', '!!!!')
             List<String> messages2 = []
             channel.basicConsume(queue2, true, new DefaultConsumer(channel) {
                 @Override
@@ -44,7 +44,7 @@ class TopicTest extends Specification {
             })
             String messageText = UUID.randomUUID().toString()
         when:
-            channel.basicPublish('exchange_for_topic', 'simple.tpc.send', null, messageText.getBytes('UTF-8'))
+            channel.basicPublish('exchange_for_fanout', '&&&', null, messageText.getBytes('UTF-8'))
         then:
             new PollingConditions(timeout: 10).eventually {
                 messageText in messages1

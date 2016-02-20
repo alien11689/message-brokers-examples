@@ -24,7 +24,10 @@ class TopicTest extends JmsSpockSpecification {
     Session session = connection.createSession(false, Session.AUTO_ACKNOWLEDGE)
 
     @AutoCleanup(quiet = true)
-    MessageConsumer consumer = session.createConsumer(session.createTopic('simple.tpc.send'))
+    MessageConsumer consumer1 = session.createConsumer(session.createTopic('simple.tpc.send'))
+
+    @AutoCleanup(quiet = true)
+    MessageConsumer consumer2 = session.createConsumer(session.createTopic('simple.tpc.>'))
 
     def setup() {
         connection.start()
@@ -32,12 +35,21 @@ class TopicTest extends JmsSpockSpecification {
 
     def 'should send message to topic and receive it'() {
         given:
-            List<String> messages = []
-            consumer.setMessageListener(new MessageListener() {
+            List<String> messages1 = []
+            consumer1.setMessageListener(new MessageListener() {
                 @Override
                 public void onMessage(Message message) {
                     TextMessage textMessage = message as TextMessage
-                    messages << textMessage.text
+                    messages1 << textMessage.text
+
+                }
+            })
+            List<String> messages2 = []
+            consumer2.setMessageListener(new MessageListener() {
+                @Override
+                public void onMessage(Message message) {
+                    TextMessage textMessage = message as TextMessage
+                    messages2 << textMessage.text
 
                 }
             })
@@ -45,8 +57,9 @@ class TopicTest extends JmsSpockSpecification {
         when:
             sendMessageTopic('simple.tpc.send', messageText)
         then:
-            new PollingConditions(timeout: 10000).eventually {
-                messageText in messages
+            new PollingConditions(timeout: 10).eventually {
+                messageText in messages1
+                messageText in messages2
             }
     }
 }
