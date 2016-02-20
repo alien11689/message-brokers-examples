@@ -23,19 +23,19 @@ class TopicTest extends Specification {
 
     def 'should send message to topic and receive it'() {
         given:
-            channel.exchangeDeclare("exchange_for_topic", "topic")
+            channel.exchangeDeclare('exchange_for_topic', 'topic')
             String queue = channel.queueDeclare().queue
-            channel.queueBind(queue, "exchange_for_topic", "simple.tpc.send")
+            channel.queueBind(queue, 'exchange_for_topic', 'simple.tpc.send')
             List<String> messages = []
             channel.basicConsume(queue, true, new DefaultConsumer(channel) {
                 @Override
                 public void handleDelivery(String consumerTag, Envelope envelope, AMQP.BasicProperties properties, byte[] body) throws IOException {
-                    messages << new String(body, "UTF-8")
+                    messages << new String(body, 'UTF-8')
                 }
             })
             String messageText = UUID.randomUUID().toString()
         when:
-            channel.basicPublish("exchange_for_topic", "simple.tpc.send", null, messageText.getBytes("UTF-8"))
+            channel.basicPublish('exchange_for_topic', 'simple.tpc.send', null, messageText.getBytes('UTF-8'))
         then:
             new PollingConditions(timeout: 10000).eventually {
                 messageText in messages

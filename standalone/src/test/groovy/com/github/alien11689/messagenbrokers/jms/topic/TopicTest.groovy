@@ -24,7 +24,7 @@ class TopicTest extends JmsSpockSpecification {
     Session session = connection.createSession(false, Session.AUTO_ACKNOWLEDGE)
 
     @AutoCleanup(quiet = true)
-    MessageConsumer consumer = session.createConsumer(session.createTopic("simple.tpc.send"))
+    MessageConsumer consumer = session.createConsumer(session.createTopic('simple.tpc.send'))
 
     def setup() {
         connection.start()
@@ -43,7 +43,7 @@ class TopicTest extends JmsSpockSpecification {
             })
             String messageText = UUID.randomUUID().toString()
         when:
-            sendMessageTopic("simple.tpc.send", messageText)
+            sendMessageTopic('simple.tpc.send', messageText)
         then:
             new PollingConditions(timeout: 10000).eventually {
                 messageText in messages

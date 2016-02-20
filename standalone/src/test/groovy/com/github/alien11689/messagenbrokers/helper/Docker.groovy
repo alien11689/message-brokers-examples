@@ -13,7 +13,7 @@ class Docker {
         proc.consumeProcessOutput(sout, serr)
         proc.waitFor()
         String output = sout.toString()
-        log.debug("Docker ps: {}", output)
+        log.debug('Docker ps: {}', output)
         return containerNames.collect { String container -> output.contains(container) }.unique() == [true]
     }
 }

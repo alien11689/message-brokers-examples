@@ -32,19 +32,19 @@ class SendAndReceiveTest extends Specification {
             try {
                 connection = AMQ_CONNECTION_FACTORY.createConnection()
                 session = connection.createSession(false, Session.AUTO_ACKNOWLEDGE)
-                producer = session.createProducer(session.createQueue("simple.send.receive"))
+                producer = session.createProducer(session.createQueue('simple.send.receive'))
                 TextMessage message = session.createTextMessage(messageText)
-                message.setIntProperty("iteration", 2)
+                message.setIntProperty('iteration', 2)
                 producer.send(message)
             } catch (JMSException e) {
-                log.error("Exception occured", e)
+                log.error('Exception occured', e)
                 throw new RuntimeException(e)
             } finally {
                 if (producer != null) {
                     try {
                         producer.close()
                     } catch (JMSException e) {
-                        log.error("Cannot close producer", e)
+                        log.error('Cannot close producer', e)
                         throw new RuntimeException(e)
                     }
                 }
@@ -52,7 +52,7 @@ class SendAndReceiveTest extends Specification {
                     try {
                         session.close()
                     } catch (JMSException e) {
-                        log.error("Cannot close session", e)
+                        log.error('Cannot close session', e)
                         throw new RuntimeException(e)
                     }
                 }
@@ -60,7 +60,7 @@ class SendAndReceiveTest extends Specification {
                     try {
                         connection.close()
                     } catch (JMSException e) {
-                        log.error("Cannot close connection", e)
+                        log.error('Cannot close connection', e)
                         throw new RuntimeException(e)
                     }
                 }
@@ -78,24 +78,24 @@ class SendAndReceiveTest extends Specification {
             try {
                 connection = AMQ_CONNECTION_FACTORY.createConnection()
                 session = connection.createSession(false, Session.AUTO_ACKNOWLEDGE)
-                consumer = session.createConsumer(session.createQueue("simple.send.receive"))
+                consumer = session.createConsumer(session.createQueue('simple.send.receive'))
                 connection.start()
                 Message message = consumer.receive(60000)
                 if (message instanceof TextMessage) {
                     TextMessage textMessage = message as TextMessage
                     receivedMessages << textMessage.text
                 } else {
-                    throw new RuntimeException("No message")
+                    throw new RuntimeException('No message')
                 }
             } catch (JMSException e) {
-                log.error("Exception occured", e)
+                log.error('Exception occured', e)
                 throw new RuntimeException(e)
             } finally {
                 if (consumer != null) {
                     try {
                         consumer.close()
                     } catch (JMSException e) {
-                        log.error("Cannot close producer", e)
+                        log.error('Cannot close producer', e)
                         throw new RuntimeException(e)
                     }
                 }
@@ -103,7 +103,7 @@ class SendAndReceiveTest extends Specification {
                     try {
                         session.close()
                     } catch (JMSException e) {
-                        log.error("Cannot close session", e)
+                        log.error('Cannot close session', e)
                         throw new RuntimeException(e)
                     }
                 }
@@ -111,7 +111,7 @@ class SendAndReceiveTest extends Specification {
                     try {
                         connection.close()
                     } catch (JMSException e) {
-                        log.error("Cannot close connection", e)
+                        log.error('Cannot close connection', e)
                         throw new RuntimeException(e)
                     }
                 }

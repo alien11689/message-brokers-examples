@@ -30,9 +30,9 @@ class SendAndListenTest extends Specification {
         given:
             Connection connection = AMQ_CONNECTION_FACTORY.createConnection()
             Session session = connection.createSession(false, Session.AUTO_ACKNOWLEDGE)
-            MessageProducer producer = session.createProducer(session.createQueue("simple.send.listen"))
+            MessageProducer producer = session.createProducer(session.createQueue('simple.send.listen'))
             TextMessage message = session.createTextMessage(messageText)
-            message.setIntProperty("iteration", 2)
+            message.setIntProperty('iteration', 2)
         when:
             producer.send(message)
         then:
@@ -48,7 +48,7 @@ class SendAndListenTest extends Specification {
             List<String> receivedMessages = []
             Connection connection = AMQ_CONNECTION_FACTORY.createConnection()
             Session session = connection.createSession(false, Session.AUTO_ACKNOWLEDGE)
-            MessageConsumer consumer = session.createConsumer(session.createQueue("simple.send.listen"))
+            MessageConsumer consumer = session.createConsumer(session.createQueue('simple.send.listen'))
             consumer.setMessageListener(new MessageListener() {
                 @Override
                 public void onMessage(Message message) {
@@ -58,11 +58,11 @@ class SendAndListenTest extends Specification {
                             String text = textMessage.getText()
                             receivedMessages << text
                         } catch (JMSException e) {
-                            log.error("Cannot read text from message", e)
+                            log.error('Cannot read text from message', e)
                             throw new RuntimeException(e)
                         }
                     } else {
-                        throw new RuntimeException("No message")
+                        throw new RuntimeException('No message')
                     }
 
                 }

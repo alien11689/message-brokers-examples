@@ -17,7 +17,7 @@ import static com.github.alien11689.messagenbrokers.jms.AmqConnectionFactoryProv
 
 @Requires({ Docker.isRunning('justAmq') })
 class SoJTest extends Specification {
-    String address = "jms:queue:forCxf?timeToLive=1000&replyToName=responseFromCxf&receiveTimeout=2000"
+    String address = 'jms:queue:forCxf?timeToLive=1000&replyToName=responseFromCxf&receiveTimeout=2000'
 
     def 'should send soap over jms'() {
         given:

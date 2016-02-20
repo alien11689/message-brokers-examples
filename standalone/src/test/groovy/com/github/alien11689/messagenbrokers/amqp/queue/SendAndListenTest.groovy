@@ -29,17 +29,17 @@ class SendAndListenTest extends Specification {
             try {
                 connection = RMQ_CONNECTION_FACTORY.newConnection()
                 channel = connection.createChannel()
-                channel.queueDeclare("simple.send.listen", true, false, false, null)
-                channel.basicPublish("", "simple.send.listen", null, messageText.getBytes("UTF-8"))
+                channel.queueDeclare('simple.send.listen', true, false, false, null)
+                channel.basicPublish('', 'simple.send.listen', null, messageText.getBytes('UTF-8'))
             } catch (IOException | TimeoutException e) {
-                log.error("Exception occured", e)
+                log.error('Exception occured', e)
                 throw new RuntimeException(e)
             } finally {
                 if (channel != null) {
                     try {
                         channel.close()
                     } catch (IOException | TimeoutException e) {
-                        log.error("Cannot close producer", e)
+                        log.error('Cannot close producer', e)
                         throw new RuntimeException(e)
                     }
                 }
@@ -47,7 +47,7 @@ class SendAndListenTest extends Specification {
                     try {
                         connection.close()
                     } catch (IOException e) {
-                        log.error("Cannot close connection", e)
+                        log.error('Cannot close connection', e)
                         throw new RuntimeException(e)
                     }
                 }
@@ -61,12 +61,12 @@ class SendAndListenTest extends Specification {
             List<String> receivedMessages = []
             Connection connection = RMQ_CONNECTION_FACTORY.newConnection()
             Channel channel = connection.createChannel()
-            channel.queueDeclare("simple.send.listen", true, false, false, null)
+            channel.queueDeclare('simple.send.listen', true, false, false, null)
         when:
-            channel.basicConsume("simple.send.listen", true, new DefaultConsumer(channel) {
+            channel.basicConsume('simple.send.listen', true, new DefaultConsumer(channel) {
                 @Override
                 public void handleDelivery(String consumerTag, Envelope envelope, AMQP.BasicProperties properties, byte[] body) throws IOException {
-                    String text = new String(body, "UTF-8");
+                    String text = new String(body, 'UTF-8');
                     receivedMessages.add(text);
                 }
             })

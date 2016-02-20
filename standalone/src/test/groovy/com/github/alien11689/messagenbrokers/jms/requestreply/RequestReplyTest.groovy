@@ -24,7 +24,7 @@ class RequestReplyTest extends Specification {
     Session session = connection.createSession(false, Session.AUTO_ACKNOWLEDGE)
 
     @AutoCleanup(quiet = true)
-    MessageProducer producer = session.createProducer(session.createQueue("simple.adder"))
+    MessageProducer producer = session.createProducer(session.createQueue('simple.adder'))
 
     TemporaryQueue temporaryQueue = session.createTemporaryQueue()
 
@@ -39,14 +39,14 @@ class RequestReplyTest extends Specification {
         given:
             Executors.newSingleThreadExecutor().submit(new Calculator())
             MapMessage message = session.createMapMessage()
-            message.setInt("a", 5)
-            message.setInt("b", 10)
+            message.setInt('a', 5)
+            message.setInt('b', 10)
             message.setJMSReplyTo(temporaryQueue)
         when:
             producer.send(message)
         then:
             MapMessage mapMessage = (MapMessage) consumer.receive(5000) as MapMessage
-            mapMessage.getInt("result") == 15
+            mapMessage.getInt('result') == 15
 
     }
 }

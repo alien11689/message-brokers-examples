@@ -56,7 +56,7 @@ class AmqpScheduledMessagesTest extends Specification {
             @Override
             public void handleDelivery(String consumerTag, Envelope envelope, AMQP.BasicProperties properties, byte[] body) {
                 println("Message received at ${new Date()}")
-                consumerText = new String(body, "UTF-8")
+                consumerText = new String(body, 'UTF-8')
             }
         }
         consumerChannel.basicConsume(queue, true, consumer)

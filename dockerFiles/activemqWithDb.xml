@@ -40,7 +40,7 @@
         </systemUsage>
 
         <transportConnectors>
-            <transportConnector name="openwire" uri="tcp://0.0.0.0:61696?maximumConnections=1000&amp;wireFormat.maxFrameSize=104857600"/>
+            <transportConnector name="openwire" uri="tcp://0.0.0.0:61616?maximumConnections=1000&amp;wireFormat.maxFrameSize=104857600"/>
             <transportConnector name="amqp" uri="amqp://0.0.0.0:5672?maximumConnections=1000&amp;wireFormat.maxFrameSize=104857600"/>
             <transportConnector name="stomp" uri="stomp://0.0.0.0:61613?maximumConnections=1000&amp;wireFormat.maxFrameSize=104857600"/>
             <transportConnector name="mqtt" uri="mqtt://0.0.0.0:1883?maximumConnections=1000&amp;wireFormat.maxFrameSize=104857600"/>
@@ -57,16 +57,16 @@
 
     </broker>
 
-  <bean id="postgres-ds" class="org.postgresql.ds.PGPoolingDataSource">
-    <property name="serverName" value="postgres"/>
-    <property name="databaseName" value="postgres"/>
-    <property name="portNumber" value="5432"/>
-    <property name="user" value="postgres"/>
-    <property name="password" value="1234"/>
-    <property name="dataSourceName" value="postgres"/>
-    <property name="initialConnections" value="1"/>
-    <property name="maxConnections" value="10"/>
-  </bean>
+    <bean id="postgres-ds" class="org.postgresql.ds.PGPoolingDataSource">
+        <property name="serverName" value="postgres"/>
+        <property name="databaseName" value="postgres"/>
+        <property name="portNumber" value="5432"/>
+        <property name="user" value="postgres"/>
+        <property name="password" value="1234"/>
+        <property name="dataSourceName" value="postgres"/>
+        <property name="initialConnections" value="1"/>
+        <property name="maxConnections" value="10"/>
+    </bean>
 
     <import resource="jetty.xml"/>
 
