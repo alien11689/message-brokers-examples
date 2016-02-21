@@ -1,4 +1,4 @@
-package com.github.alien11689.messagenbrokers.jms.scheduler
+package com.github.alien11689.messagenbrokers.jms.amqspecific.scheduler
 
 import com.github.alien11689.messagenbrokers.helper.Docker
 import org.apache.activemq.ScheduledMessage

@@ -12,7 +12,6 @@ public class CamelRoute extends RouteBuilder implements Runnable {
 
     @Override
     public void configure() throws Exception {
-
         from("rabbitmq:localhost:5672/tasks?username=admin&password=admin&autoDelete=false&durable=true&exchangeType=direct&routingKey=camel&queue=forCamel")
             .log(LoggingLevel.INFO, "Received message ${body}")
             .convertBodyTo(String.class)

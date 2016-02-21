@@ -22,7 +22,7 @@
         </managementContext>
 
         <persistenceAdapter>
-            <jdbcPersistenceAdapter dataDirectory="activemq-data" dataSource="#postgres-ds"/>
+            <jdbcPersistenceAdapter dataSource="#postgres-ds"/>
         </persistenceAdapter>
 
         <systemUsage>

@@ -17,6 +17,7 @@ public class AmqConnectionFactoryProvider {
 
     public static final ConnectionFactory AMQ_CONNECTION_FACTORY_CLUSTER = new ActiveMQConnectionFactory(
         "admin", "admin",
-        "failover:(tcp://localhost:61616,tcp://localhost:61617)?randomize=false&maxReconnectAttempts=5"
+        "failover:(tcp://localhost:61616,tcp://localhost:61617)" +
+            "?randomize=false&maxReconnectAttempts=5"
     );
 }

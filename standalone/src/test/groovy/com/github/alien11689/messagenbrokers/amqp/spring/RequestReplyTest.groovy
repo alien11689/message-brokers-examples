@@ -1,8 +1,6 @@
 package com.github.alien11689.messagenbrokers.amqp.spring
 
 import com.github.alien11689.messagenbrokers.helper.Docker
-import org.springframework.amqp.core.Message
-import org.springframework.amqp.core.MessageProperties
 import org.springframework.amqp.rabbit.core.RabbitTemplate
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.test.context.ContextConfiguration
@@ -20,11 +18,11 @@ class RequestReplyTest extends Specification {
         given:
             String message = UUID.randomUUID().toString()
         when:
-            rabbitTemplate.send('spring.rr.in', new Message(message.getBytes('UTF-8'), new MessageProperties()))
+            rabbitTemplate.convertAndSend('spring.rr.in', message)
         then:
             new PollingConditions(timeout: 5).eventually {
-                Message receive = rabbitTemplate.receive('spring.rr.out')
-                new String(receive.body, 'UTF-8') == "Spring: $message" as String
+                String receivedMessage = rabbitTemplate.receiveAndConvert('spring.rr.out')
+                receivedMessage == "Spring: $message" as String
             }
     }
 }

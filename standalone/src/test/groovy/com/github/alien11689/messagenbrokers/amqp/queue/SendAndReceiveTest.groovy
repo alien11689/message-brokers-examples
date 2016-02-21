@@ -63,7 +63,7 @@ class SendAndReceiveTest extends Specification {
                 channel = connection.createChannel()
                 channel.queueDeclare('simple.send.receive', true, false, false, null)
                 GetResponse getResponse = channel.basicGet('simple.send.receive', true)
-                receivedMessages << new String(getResponse.getBody(), 'UTF-8')
+                receivedMessages << new String(getResponse.body, 'UTF-8')
             } catch (IOException | TimeoutException e) {
                 log.error('Exception occured', e)
             } finally {
